@@ -22,24 +22,11 @@ React.js ,Node.js ,MongoDB ,Git & GitHub
 Tailwind CSS ,Express.js ,Postman}
 
 
-cd your-repo-name
-2. Install DependenciesBash# For the backend
-cd backend
-npm install
 
 # For the frontend
 cd ../frontend
-npm install
-3. Environment VariablesCreate a .env file in the root of the backend folder and add your credentials:Code snippetPORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-STRIPE_API_KEY=your_stripe_key
-4. Run the ApplicationBash# Start both frontend and backend
-npm run dev
-📸 ScreenshotsTip: Add images or GIFs of your project here to make it more appealing.Home PageProduct ViewCart Page🗺️ Roadmap[ ] Add "Wishlist" functionality.[ ] Implement AI-based size recommendation.[ ] Add multi-currency support.[ ] Dark mode toggle.📄 LicenseDistributed under the MIT License. See LICENSE for more information.
-
 
 🤝 Contact
 Your Name - Maurya Ajay Munnalal - ajaymaurya1725@gmail.com
 
-Project Link: https://github.com/YourUsername/your-repo-name
+Project Link: https://github.com/ajaymaurya4527/E-Commerce-Platform-for-Apparel.git
