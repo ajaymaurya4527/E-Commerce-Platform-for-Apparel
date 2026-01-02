@@ -10,6 +10,7 @@ const productSchema=new mongoose.Schema({
     sizes:{type:Array,required:true},
     bestseller:{type:Boolean},
     Date:{type:Number,required:true}
-},{timestamps});
+    
+},{timestamps:true});
 
 export const Product = mongoose.model('Product', productSchema);
