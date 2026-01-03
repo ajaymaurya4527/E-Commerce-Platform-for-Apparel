@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import {apiError} from "../utils/apiError.js"
 import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/apiResponse.js"
+import jwt from "jsonwebtoken";
 
 const generateAccessAndRefereshTokens=async (userId)=>{
     const user=await User.findById(userId);
@@ -103,6 +104,23 @@ const loginUser=asyncHandler(async (req,res)=>{
 
 })
 const adminLogin=asyncHandler(async (req,res)=>{
+
+    const {email,password}=req.body
+
+    if (process.env.ADMIN_EMAIL === email && process.env.ADMIN_PASSWORD === password){
+        const token=jwt.sign(email+password,process.env.ACCESS_TOKEN_SECRET);
+
+        const options = {
+        httpOnly: true,
+        secure: true
+        }
+        
+        return res.status(200)
+        .cookie("token",token,options)
+        .json(new ApiResponse(200,token,"Admin login successfully"))
+
+        
+    }
     
 })
 

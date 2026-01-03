@@ -58,10 +58,21 @@ const listProduct=asyncHandler(async (req,res)=>{
 //function for remove product
 const removeProduct=asyncHandler(async (req,res)=>{
 
+    const removeProduct=await Product.findByIdAndDelete(req.body.id)
+
+    return res.status(200)
+    .json(new ApiResponse(200,removeProduct,"removed successfully"))
+
 })
 
 //function for single product info
 const singleProduct=asyncHandler(async (req,res)=>{
+    const {productId}=req.body
+
+    const product=await Product.findById(productId)
+
+    return res.status(200)
+    .json(new ApiResponse(200,product,"product data fatched successfully"))
 
 })
 
