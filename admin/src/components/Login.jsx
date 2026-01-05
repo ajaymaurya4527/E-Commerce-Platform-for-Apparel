@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Lock, Mail, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import axios from "axios";
-import { backendUrl } from '../Layout';
+import {backendUrl} from "../Layout.jsx"
 import { toast } from 'react-toastify';
-import { AdminContext } from './context/AdminContex';
+import {AdminContext} from "../context/AdminContex.jsx"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);

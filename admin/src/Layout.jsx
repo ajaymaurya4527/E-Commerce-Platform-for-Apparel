@@ -5,9 +5,10 @@ import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
 import { ToastContainer } from 'react-toastify';
-import { AdminContext } from './components/context/AdminContex';
+import { AdminContext } from './context/AdminContex';
 
 export const backendUrl=import.meta.env.VITE_BACKEND_URL
+export const currency="$"
 
 function Layout() {
 

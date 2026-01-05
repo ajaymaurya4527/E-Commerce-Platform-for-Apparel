@@ -1,7 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { assets } from '../assets/assets';
+import { backendUrl } from '../Layout';
+import { AdminContext } from '../context/AdminContex';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 function Add() {
+
+  const {token,setToken}=useContext(AdminContext);
+
 
   const [image1, setImage1] = useState(false)
   const [image2, setImage2] = useState(false)
@@ -17,6 +25,45 @@ function Add() {
   const [bestseller, setBestSeller] = useState(false);
 
   const onSubmitHandler = async (e)=>{
+    e.preventDefault();
+
+    try {
+    const formData=new FormData();
+    image1 && formData.append("image1",image1);
+    image2 && formData.append("image2",image2);
+    image3 && formData.append("image3",image3);
+    image4 && formData.append("image4",image4);
+
+    formData.append("name",name);
+    formData.append("description",description);
+    formData.append("price",price);
+    formData.append("category",category);
+    formData.append("subCategory",subCategory);
+    formData.append("sizes",JSON.stringify(sizes));
+    formData.append("bestseller",bestseller);
+
+    const response=await axios.post(backendUrl + "/product/add",formData,{headers:{token}})
+
+    if(response.data.success){
+      toast.success(response.data.message)
+
+      setName("")
+      setDiscription("")
+      setPrice("")
+      setImage1(false)
+      setImage2(false)
+      setImage3(false)
+      setImage4(false)
+    }else{
+      toast.error(response.data.message)
+    }
+
+      
+    } catch (error) {
+
+      toast.error(error)
+      
+    }
 
   }
 

@@ -10,7 +10,7 @@ import {
   ChevronDown,
   ShoppingCart
 } from 'lucide-react';
-import { AdminContext } from './context/AdminContex';
+import { AdminContext } from '../context/AdminContex';
 
 const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
