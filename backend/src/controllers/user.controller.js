@@ -117,9 +117,9 @@ const adminLogin=asyncHandler(async (req,res)=>{
         
         return res.status(200)
         .cookie("token",token,options)
-        .json(new ApiResponse(200,token,"Admin login successfully"))
-
-        
+        .json(new ApiResponse(200,token,"Admin login successfully"))  
+    }else {
+        return res.json({success:false, message:"Invalid credentials"})
     }
     
 })

@@ -8,6 +8,7 @@ import Layout from './Layout.jsx';
 import Add from "./pages/Add.jsx"
 import List from "./pages/List.jsx"
 import Orders from "./pages/Orders.jsx"
+import AdminContextProvider from './components/context/AdminContex.jsx';
 
 
 const router=createBrowserRouter([
@@ -24,7 +25,9 @@ const router=createBrowserRouter([
 ])
 
 createRoot(document.getElementById('root')).render(
+  <AdminContextProvider >
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,
+  </AdminContextProvider>
 )

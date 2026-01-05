@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Lock, Mail, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import axios from "axios";
+import { backendUrl } from '../Layout';
+import { toast } from 'react-toastify';
+import { AdminContext } from './context/AdminContex';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
+  const {token,setToken}=useContext(AdminContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
+    const response=await axios.post(backendUrl + "/user/admin",{email,password})
+    try {
+      
+    if(response.data.success){
+      setToken(response.data.data)
+    }else{
+      toast.error(response.data.message)
+    }
+      
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+
+    }
+    
+
   };
 
   return (

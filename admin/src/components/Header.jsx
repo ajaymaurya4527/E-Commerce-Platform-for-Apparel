@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router';
 import { 
   Search, 
@@ -10,9 +10,11 @@ import {
   ChevronDown,
   ShoppingCart
 } from 'lucide-react';
+import { AdminContext } from './context/AdminContex';
 
 const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const {setToken}=useContext(AdminContext);
 
   return (
     <header className="sticky top-0 z-40 flex h-20 w-full items-center justify-between bg-slate-200 px-8 backdrop-blur-md border-b border-gray-100">
@@ -88,7 +90,7 @@ const Header = () => {
                 <Settings size={18} /> Settings
               </a>
               <hr className="my-1 border-gray-100" />
-              <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50">
+              <button onClick={()=>setToken("")} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50">
                 <LogOut size={18} /> Logout
               </button>
             </div>
