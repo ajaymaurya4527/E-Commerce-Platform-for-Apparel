@@ -3,6 +3,7 @@ import {apiError} from "../utils/apiError.js"
 import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/apiResponse.js"
 import jwt from "jsonwebtoken";
+import { response } from "express";
 
 const generateAccessAndRefereshTokens=async (userId)=>{
     const user=await User.findById(userId);
@@ -18,14 +19,15 @@ const generateAccessAndRefereshTokens=async (userId)=>{
 
 const registerUser=asyncHandler(async (req,res)=>{
 
-    const {name,email,password}=req.body
+   try {
+     const {name,email,password}=req.body
 
     if([name,email,password].some((field)=>field?.trim() === "")){
-        throw new apiError(400,"all fields are required")
+        return res.json({success:false,message:"All Fields are required"})
     }
 
     if(password.length<8){
-        throw new apiError(400,"please enter strong password of length of 8 or more then 8")
+        return res.json({success:false,message:"please enter strong password of length of 8 or more then 8"})
     }
 
     const existedUser=await User.findOne({
@@ -33,7 +35,7 @@ const registerUser=asyncHandler(async (req,res)=>{
     })
 
     if(existedUser){
-        throw  new apiError(400,"email already exists")
+        return res.json({success:false,message:"Email Already Exists"})
     }
 
     const user=await User.create({
@@ -41,17 +43,22 @@ const registerUser=asyncHandler(async (req,res)=>{
         email,
         password
     })
+    const {accessToken,refreshToken}=await generateAccessAndRefereshTokens(user._id)
 
     const createdUser=await User.findById(user._id).select(
         "-password -refreshToken"
     )
 
     if(!createdUser){
-        throw new apiError(500,"something went wrong while registering user")
+        return res.json({success:false,message:"something went wrong while registering user"})
     }
 
     return res.status(201)
-    .json(new ApiResponse(200,createdUser,"user registered successfully"))
+    .json(new ApiResponse(200,{user:createdUser,accessToken},"user registered successfully"))
+    
+   } catch (error) {
+    
+   }
 
 
 })
@@ -61,7 +68,7 @@ const loginUser=asyncHandler(async (req,res)=>{
     const {email,password}=req.body
 
     if(!email && !password){
-        throw new apiError(400,"email and password is required")
+        return res.json({success:false,message:"Email and Password is required"})
     }
 
     const user=await User.findOne({
@@ -69,12 +76,16 @@ const loginUser=asyncHandler(async (req,res)=>{
     })
 
     if(!user){
-        throw new apiError(400,"user does not exist please enter valid email")
+        return res.json({success:false,message:"User does not exist"})
+    }
+
+    if(!user){
+        return response.json({success:false,message:"User does not exist please enter valid email"})
     }
 
     const isPasswordValid=await user.isPasswordCorrect(password)
     if(!isPasswordValid){
-        throw new apiError(401,"incorrect password")
+        return res.json({success:false,message:"Incorrect Password"})
     }
 
     const {accessToken,refreshToken}=await generateAccessAndRefereshTokens(user._id)
@@ -93,7 +104,7 @@ const loginUser=asyncHandler(async (req,res)=>{
     .cookie("refreshToken",refreshToken,options)
     .json(new ApiResponse(200,{
         user:loggedInUser,accessToken,refreshToken
-    },"user logged in successfully"))
+    },"Logged in successfully"))
 
 
 

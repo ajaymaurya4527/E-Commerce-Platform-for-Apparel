@@ -10,12 +10,20 @@ const addProduct=asyncHandler(async (req,res)=>{
 
     const {name,description,price,category,subCategory,sizes,bestseller}=req.body
 
+   if([name,description,price].some((field)=>field?.trim() === "")){
+        return res.json({success:false,message:"All Fields are required"})
+    }
+
     const image1=req.files?.image1 && req.files?.image1[0]
     const image2=req.files?.image2 && req.files?.image2[0]
     const image3=req.files?.image3 && req.files?.image3[0]
     const image4=req.files?.image4 && req.files?.image4[0]
 
     const images=[image1,image2,image3,image4].filter((item)=>item !== undefined)
+
+    if(images.length=0){
+        return res.json({success:false,message:"Minimum 1 image is required"})
+    }
 
     let imagesUrl=await Promise.all(
         images.map(async (item)=>{
@@ -29,7 +37,7 @@ const addProduct=asyncHandler(async (req,res)=>{
         price:Number(price),
         category,
         subCategory,
-        sizes,
+        sizes:JSON.parse(sizes),
         bestseller:bestseller === "true" ? true:false,
         image:imagesUrl,
         Date:Date.now(),
@@ -37,7 +45,7 @@ const addProduct=asyncHandler(async (req,res)=>{
     })
 
     if(!product){
-        throw new apiError(500,"something went wrong while adding product")
+        res.json({success:false,message:"something went wrong while adding product"})
     }
 
     return res.status(200)

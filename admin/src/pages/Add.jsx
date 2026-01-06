@@ -43,6 +43,7 @@ function Add() {
     formData.append("bestseller",bestseller);
 
     const response=await axios.post(backendUrl + "/product/add",formData,{headers:{token}})
+    console.log(response)
 
     if(response.data.success){
       toast.success(response.data.message)
