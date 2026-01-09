@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       {path:"cart",element:<Cart/>},
       {path:"collection",element:<Collection/>},
       {path:"login",element:<Login/>},
-      {path:"order",element:<Order/>},
+      {path:"orders",element:<Order/>},
       {path:"place-order",element:<PlaceOrder/>},
       {path:"product/:productId",element:<Product/>}
     ]

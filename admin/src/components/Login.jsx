@@ -18,6 +18,7 @@ const Login = () => {
       
     if(response.data.success){
       setToken(response.data.data)
+      localStorage.setItem("token",response.data.data)
     }else{
       toast.error(response.data.message)
     }
@@ -30,6 +31,7 @@ const Login = () => {
     
 
   };
+  
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">

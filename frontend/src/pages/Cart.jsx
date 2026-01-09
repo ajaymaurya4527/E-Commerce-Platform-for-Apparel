@@ -13,7 +13,8 @@ function Cart() {
 
   useEffect(()=>{
 
-    const tempData=[];
+    if(products.length>0){
+       const tempData=[];
     for(const items in cartItem){
       for(const item in cartItem[items]){
         if (cartItem[items][item]){
@@ -27,7 +28,10 @@ function Cart() {
     }
     setCartData(tempData);
 
-  },[cartItem]);
+    }
+
+  
+  },[cartItem,products]);
 
   
   return (

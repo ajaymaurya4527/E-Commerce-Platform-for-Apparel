@@ -6,12 +6,12 @@ const userSchema=new mongoose.Schema({
     name:{type:String,required:true},
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true},
-     refreshToken: {
+    refreshToken: {
             type: String
         },
     cartData:{type:Object,default:{}}
 
-},{timestamps:true},{minimize:false});// minimize false because of carData default false
+},{timestamps:true,minimize:false});// minimize false because of carData default false
 
 
 /* this code not run don't know the reason

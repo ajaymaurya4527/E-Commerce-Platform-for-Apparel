@@ -24,12 +24,15 @@ app.use(cookieParser())
 //routes import
 import userRouter from "./routes/user.route.js"
 import productRouter from "./routes/product.route.js";
+import cartRouter from "./routes/cart..route.js"
+import orderRouter from "./routes/order.route.js";
 
 //routes declaration
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/product",productRouter)
+app.use("/api/v1/cart",cartRouter)
+app.use("/api/v1/order",orderRouter)
 
-// Global error handler
 
 
 export {app};

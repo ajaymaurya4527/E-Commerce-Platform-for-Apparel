@@ -9,7 +9,7 @@ const addminAuth=async (req,res,next)=>{
             throw new apiError(401,"Not Autherzied Person Login Again")
         }
 
-        const token_decode=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+        const token_decode=jwt.verify(token,process.env.TOKEN_SECRET);
 
         if(token_decode !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD){
             throw new apiError(401,"Not Autherzied")

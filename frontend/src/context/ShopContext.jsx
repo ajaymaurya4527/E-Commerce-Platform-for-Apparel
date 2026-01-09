@@ -56,6 +56,19 @@ const ShopContextProvider = (props) => {
 
         setCartItem(cartData);
 
+        if (accessToken){
+            try {
+
+                await axios.post(backendUrl + "/cart/add",{itemId,size},{headers:{accessToken}})
+                
+            } catch (error) {
+
+                console.log(error)
+                toast.error(error.message)
+                
+            }
+        }
+
     }
 
     const getCartCount=()=>{
@@ -82,6 +95,19 @@ const ShopContextProvider = (props) => {
         let cartData=structuredClone(cartItem)
         cartData[itemId][size]=quantity
          setCartItem(cartData);
+
+         if(accessToken){
+            try {
+                await axios.post(backendUrl + "/cart/update",{itemId,size,quantity},{headers:{accessToken}})
+                
+            } catch (error) {
+                console.log(error)
+                toast.error(error.message)
+                
+            }
+         }
+
+
     }
 
     const getCartAmount=()=>{
@@ -122,15 +148,34 @@ const ShopContextProvider = (props) => {
         }
     }
 
-    useEffect(()=>{
-        getProductsData()
-    },[])
+    //when we reload our cart show 0 and to prevent that is code
+
+    const getUserCart=async (accessToken)=>{
+        try {
+           const response=await axios.post(backendUrl + "/cart/get",{},{headers:{accessToken}})
+            if(response.data.success){
+                setCartItem(response.data.cartData)
+            }
+            
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+            
+        }
+    }
 
     useEffect(()=>{
-        if(!accessToken && localStorage.getItem("accessToken")){
-            setAccessToken("accessToken")
-        }
+        getProductsData();
+        
     },[])
+
+    useEffect(() => {
+    const savedToken = localStorage.getItem("accessToken"); // Get the actual value
+    if (!accessToken && savedToken) {
+        setAccessToken(savedToken); // Set the actual value, not the string "accessToken"
+        getUserCart(savedToken);
+    }
+}, []);
 
 
 

@@ -41,7 +41,8 @@ const registerUser=asyncHandler(async (req,res)=>{
     const user=await User.create({
         name,
         email,
-        password
+        password,
+
     })
     const {accessToken,refreshToken}=await generateAccessAndRefereshTokens(user._id)
 
@@ -119,7 +120,7 @@ const adminLogin=asyncHandler(async (req,res)=>{
     const {email,password}=req.body
 
     if (process.env.ADMIN_EMAIL === email && process.env.ADMIN_PASSWORD === password){
-        const token=jwt.sign(email+password,process.env.ACCESS_TOKEN_SECRET);
+        const token=jwt.sign(email+password,process.env.TOKEN_SECRET);
 
         const options = {
         httpOnly: true,

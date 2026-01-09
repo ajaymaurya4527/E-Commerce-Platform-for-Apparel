@@ -2,7 +2,11 @@ import React from 'react';
 import { assets } from '../assets/assets';
 
 const About = () => {
-  return (
+
+  
+
+
+  return  (
     <section className="relative py-20 bg-gray-50 overflow-hidden">
       {/* Decorative Background Element */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">

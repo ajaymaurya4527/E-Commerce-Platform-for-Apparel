@@ -19,7 +19,7 @@ function Login() {
 
       if (currentState === "Sign Up") {
         const response = await axios.post(backendUrl + "/user/register", { name, email, password })
-        console.log(response)
+        
         if (response.data.success) {
           localStorage.setItem("accessToken",response.data.data.accessToken)
           toast.success(response.data.message)

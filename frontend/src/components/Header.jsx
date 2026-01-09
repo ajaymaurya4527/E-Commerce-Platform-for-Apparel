@@ -16,6 +16,8 @@ function Header() {
 
    const logout=()=>{
     setAccessToken("")
+    localStorage.removeItem("accessToken")
+    setCartItem({})
 
    }
   
@@ -64,19 +66,22 @@ function Header() {
 
             {/* Profile */}
             <div className='group relative'>
-              <Link to="/login" className="p-1.5 sm:p-2 text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-full transition-all block">
+              <div onClick={()=>accessToken ? null:navigate("/login")} className="p-1.5 sm:p-2 text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-full transition-all block">
                 <User className="w-5 h-5" />
-              </Link>
+              </div>
               
               {/* Profile Dropdown (Desktop Only) */}
-              <div className='hidden group-hover:block absolute right-0 pt-4'>
+              {
+                accessToken &&
+                <div className='hidden group-hover:block absolute right-0 pt-4'>
                 <div className='w-40 bg-white border border-gray-100 shadow-xl rounded-xl py-2'>
                   <p className='px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 cursor-pointer'>My Profile</p>
-                  <p className='px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 cursor-pointer'>Orders</p>
+                  <p onClick={()=>navigate("/orders")} className='px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 cursor-pointer'>Orders</p>
                   <hr className="my-1 border-gray-50" />
                   <button onClick={logout} className='px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer'>Logout</button>
                 </div>
               </div>
+              }
             </div>
 
             {/* Cart */}
