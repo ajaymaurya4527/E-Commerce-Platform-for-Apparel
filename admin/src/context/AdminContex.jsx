@@ -6,8 +6,9 @@ export const AdminContext= createContext();
 const AdminContextProvider=(props)=>{
 
     const [token, setToken] = useState("");
+    const [search,setSearch]=useState("")
 
-    const value={token,setToken}
+    const value={token,setToken,search,setSearch}
 
     useEffect(() => {
     const savedToken = localStorage.getItem("token"); // Get the actual value

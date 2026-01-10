@@ -7,7 +7,7 @@ const orderSchema=new mongoose.Schema(
     orderPrice: { type: String, required: true },
     customer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     orderItems: { type: Array,required:true},
-    address: { type: String, required: true },
+    address: { type:Object, required: true },
     paymentMethod:{type:String,required:true},
     payment:{type:Boolean,required:true,default:false},
     date:{type:Number,required:true},

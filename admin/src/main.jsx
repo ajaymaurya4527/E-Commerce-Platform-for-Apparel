@@ -9,6 +9,7 @@ import Add from "./pages/Add.jsx"
 import List from "./pages/List.jsx"
 import Orders from "./pages/Orders.jsx"
 import AdminContextProvider from './context/AdminContex.jsx';
+import { Navigate } from 'react-router';
 
 
 const router=createBrowserRouter([
@@ -16,6 +17,7 @@ const router=createBrowserRouter([
     path:"/",
     element:<Layout />,
     children:[
+      {index:true,element:<Navigate to="/add" replace />},
       {path:"/add",element:<Add />},
       {path:"/list",element:<List />},
       {path:"/orders",element:<Orders />}

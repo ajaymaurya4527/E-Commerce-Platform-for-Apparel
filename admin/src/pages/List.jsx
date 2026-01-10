@@ -8,8 +8,8 @@ import { AdminContext } from '../context/AdminContex'
 function List() {
   const [list, setList] = useState([])
   const [loading, setLoading] = useState(true)
-  const {token,setToken}=useContext(AdminContext)
-
+  const {token,setToken,search,setSearch}=useContext(AdminContext)
+  
   const fetchList = async () => {
     try {
       const response = await axios.get(backendUrl + "/product/list")
@@ -47,6 +47,12 @@ function List() {
     fetchList();
   }, [])
 
+  const filteredList = list.filter((item) => 
+    item.name.toLowerCase().includes(search.toLowerCase()) || 
+    item.category.toLowerCase().includes(search.toLowerCase())
+  );
+
+  
   return (
     <div className="w-full px-4 md:px-10 py-6 bg-[#f8fafc] min-h-screen">
       
@@ -86,13 +92,11 @@ function List() {
 
         {/* ----- List Content ----- */}
         <div className="divide-y divide-slate-100">
-          {loading ? (
-             <div className="p-20 text-center flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                <p className="font-black text-xl text-indigo-900">Syncing Database...</p>
-             </div>
-          ) : list.length > 0 ? (
-            list.map((item, index) => (
+      {loading ? (
+          <p>Syncing...</p>
+      ) : filteredList.length > 0 ? ( // Use filteredList here
+          filteredList.map((item, index) => (
+             (
               <div 
                 key={index} 
                 // Changed: Reduced py-10 to py-6 (approx 30-40% reduction)
@@ -140,8 +144,9 @@ function List() {
                   </button>
                 </div>
               </div>
-            ))
-          ) : (
+            )
+          ))
+      ) : (
             <div className="p-20 text-center flex flex-col items-center">
                <Package size={60} className="text-slate-200 mb-4" />
                <p className="text-slate-500 text-xl font-black italic">No products found.</p>

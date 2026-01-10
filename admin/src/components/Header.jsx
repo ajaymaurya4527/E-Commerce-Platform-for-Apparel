@@ -14,7 +14,9 @@ import { AdminContext } from '../context/AdminContex';
 
 const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const {setToken}=useContext(AdminContext);
+  const {setToken,search,setSearch}=useContext(AdminContext);
+  
+  
 
   const logout=()=>{
     setToken("")
@@ -47,11 +49,14 @@ const Header = () => {
           <span className="absolute inset-y-0 left-0 flex items-center pl-3">
             <Search className="h-5 w-5 text-gray-400" />
           </span>
-          <input
+          <input value={search}
+            onChange={(e)=>setSearch(e.target.value)}
             className="block w-full rounded-2xl border-none bg-gray-100 py-2.5 pl-10 pr-3 text-sm placeholder-gray-500 focus:bg-white focus:ring-2 focus:ring-orange-500 transition-all duration-200 outline-none"
             placeholder="Search orders, products, or customers..."
             type="search"
+            
           />
+         
         </div>
       </div>
 

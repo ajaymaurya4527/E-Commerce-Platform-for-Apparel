@@ -57,12 +57,14 @@ function Header() {
           {/* --- ACTION ICONS --- */}
           <div className='flex items-center gap-3 sm:gap-5'>
             {/* Search */}
+            <Link to="/collection">
             <button 
               onClick={() => setShowSearch(prev => !prev)}
               className="p-1.5 sm:p-2 text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-full transition-all"
             >
               <Search className="w-5 h-5" />
             </button>
+            </Link>
 
             {/* Profile */}
             <div className='group relative'>
