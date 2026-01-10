@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ShoppingCart
 } from 'lucide-react';
+import { Link } from 'react-router';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -51,11 +52,13 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-bold mb-6 uppercase tracking-wider text-sm">Shop Categories</h4>
             <ul className="space-y-4 text-sm">
+            
               <li><a href="#" className="hover:text-orange-500 transition-colors">Men's Apparel</a></li>
               <li><a href="#" className="hover:text-orange-500 transition-colors">Women's Collection</a></li>
               <li><a href="#" className="hover:text-orange-500 transition-colors">Accessories</a></li>
               <li><a href="#" className="hover:text-orange-500 transition-colors">New Arrivals</a></li>
               <li><a href="#" className="hover:text-orange-500 transition-colors">Sale & Offers</a></li>
+              
             </ul>
           </div>
 
