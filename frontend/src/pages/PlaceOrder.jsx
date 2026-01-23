@@ -61,6 +61,15 @@ function PlaceOrder() {
             toast.error(response.data.message)
           }
           break;
+          case "stripe":
+            const responseStripe = await axios.post(backendUrl + "/order/stripe", orderData, { headers: { accessToken } })
+            if(responseStripe.data.success){
+              const {session_url}=responseStripe.data
+              window.location.replace(session_url)
+            }else{
+              toast.error(responseStripe.data.message)
+            }
+
         default:
           toast.info("Online payment methods are coming soon!")
           break;

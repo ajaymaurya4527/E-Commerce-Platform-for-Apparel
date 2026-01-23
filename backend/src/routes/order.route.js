@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {placeOrder,placeOrderStripe,placeOrderRazorpay,AllOrders,userOrders,updateStatus} from "../controllers/order.conroller.js"
+import {placeOrder,placeOrderStripe,placeOrderRazorpay,AllOrders,userOrders,updateStatus, verifyStripe} from "../controllers/order.conroller.js"
 import verifyJWT from "../middlewares/userAuth.middleware.js";
 import addminAuth from "../middlewares/adminAuth.middleware.js";
 
@@ -9,6 +9,8 @@ const orderRouter=Router();
 orderRouter.route("/place").post(verifyJWT,placeOrder)
 orderRouter.route("/stripe").post(verifyJWT,placeOrderStripe)
 orderRouter.route("/razorpay").post(verifyJWT,placeOrderRazorpay)
+orderRouter.route("/verify").post(verifyJWT,verifyStripe)
+
 
 //user features
 orderRouter.route("/user-orders").post(verifyJWT,userOrders)

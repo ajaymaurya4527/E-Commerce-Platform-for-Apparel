@@ -14,6 +14,8 @@ import Order from "./pages/Order.jsx"
 import PlaceOrder from "./pages/PlaceOrder.jsx"
 import Product from "./pages/Product.jsx"
 import ShopContextProvider from './context/ShopContext.jsx';
+import Verify from './components/Verify.jsx';
+import Myprofile from './pages/Myprofile.jsx';
 
 
 
@@ -31,7 +33,10 @@ const router = createBrowserRouter([
       {path:"login",element:<Login/>},
       {path:"orders",element:<Order/>},
       {path:"place-order",element:<PlaceOrder/>},
-      {path:"product/:productId",element:<Product/>}
+      {path:"product/:productId",element:<Product/>},
+      {path:"/verify",element:<Verify />},
+      {path:"profile",element:<Myprofile />}
+     
     ]
   },
 ]);

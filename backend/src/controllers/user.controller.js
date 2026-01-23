@@ -135,5 +135,28 @@ const adminLogin=asyncHandler(async (req,res)=>{
     }
     
 })
+const changePassword=async (req,res)=>{
+    try {
+        const {oldPassword,newPassword,userId}=req.body
 
-export {registerUser,loginUser,adminLogin}
+        if(!oldPassword && !newPassword){
+            return res.json({success:false,message:"Both fields are required"})
+        }
+        const user=await User.findById(userId)
+        const isPasswordValid=await user.isPasswordCorrect(oldPassword)
+        if(!isPasswordValid){
+            return res.json({success:false,message:"Incorrect old password"})
+        }
+        user.passsword=newPassword
+        await user.save({validateBeforeSave:false})
+        
+        return res.json({success:true,message:"Password changed successfully"})
+
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+}
+
+export {registerUser,loginUser,adminLogin,changePassword}
