@@ -6,6 +6,7 @@ import OurPolicy from '../components/OurPolicy.jsx'
 import NewsLatterBox from '../components/NewsLatterBox.jsx'
 
 function Home() {
+  
   return (
     <div>
       <Hero />

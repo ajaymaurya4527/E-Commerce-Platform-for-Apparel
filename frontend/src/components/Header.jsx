@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router';
 import { assets } from '../assets/assets.js'
 import { ShopContext } from '../context/ShopContext.jsx';
 import { ShoppingCart, Search, User, Menu, X, ChevronRight } from 'lucide-react';
+import { jwtDecode } from "jwt-decode";
 
 function Header() {
   const [visible, setVisible] = useState(false);
@@ -20,6 +21,26 @@ function Header() {
     setCartItem({})
 
    }
+   const checkTokenExpiry = () => {
+     const token = localStorage.getItem('accessToken');
+     if (accessToken) {
+       const decoded = jwtDecode(token);
+       const currentTime = Date.now() / 1000;
+   
+       if (decoded.exp < currentTime) {
+         localStorage.removeItem('accessToken');
+         logout();
+         navigate("/login")
+
+       }
+     }
+   };
+   
+   // Run this in your App.js useEffect
+   useEffect(() => {
+     checkTokenExpiry();
+   }, []);
+   
   
 
   // Dynamic NavLink Styling for Desktop
