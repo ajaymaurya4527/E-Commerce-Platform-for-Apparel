@@ -1,32 +1,54 @@
-👕 TrendyThread: E-Commerce Platform for ApparelTrendyThread is a full-stack e-commerce application designed specifically for clothing and apparel brands. It provides a seamless shopping experience with features like product filtering, secure checkout, and user profile management.
+# MauryaShop - Full Stack MERN E-Commerce Platform
 
+MauryaShop is a fully responsive, modern clothing and apparel e-commerce web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js), styled with Tailwind CSS, and optimized with TypeScript-ready structuring. It features a complete multi-step client checkout experience and a dedicated Admin Panel dashboard for seamless store orchestration.
 
-{🚀 Features
-User Authentication: Secure Sign Up, Login, and Password recovery.
+---
 
-Dynamic Product Catalog: Filter apparel by category (Men, Women, Kids), size, color, and price.
+## 🚀 Features
 
-Shopping Cart: Add, remove, and update quantities of items in real-time.
+### 🛒 Frontend Storefront
+- **Dynamic Collection Gallery:** Browse comprehensive apparel product lists with modern image hover transitions.
+- **Advanced Filtering & Sorting:** Real-time client-side filter mechanics sorted by category (Men, Women, Kids), sub-categories (Topwear, Bottomwear, Winterwear), and price dynamics (Low to High / High to Low).
+- **Global Search:** Immediate interactive search component querying live product listings.
+- **Product Details Page:** Comprehensive view containing responsive thumbnail selection galleries, explicit size selectors, detailed descriptions, and structured related-items recommendations.
+- **Robust Cart Lifecycle:** Persistent item grouping state management handling custom selected sizing structures.
+- **Optimized Checkout & Payments:** Fully operational multi-step delivery information collection integrated with **Cash on Delivery (COD)** and secure **Stripe API** payment gateways.
 
-Payment Integration: Secure payment gateway integration (e.g., Stripe or PayPal).
+### 🛡️ Admin Dashboard
+- **Product Publishing Engine:** Interface offering multi-image file uploads via Cloudinary storage, dynamic form controls for title description, sizing configurations, specific pricing parameters, and direct "Bestseller" flags.
+- **Catalog Management:** Unified records tracking complete items in the database with rapid single-click removal properties.
+- **Orders Control Center:** Real-time updates showcasing purchase details, detailed shipping address payloads, active payment states, and modular status controls (e.g., *Order Placed*, *Packing*, *Shipped*, *Out for delivery*, *Delivered*).
 
-Admin Dashboard: Manage products, track inventory, and view order history.
+---
 
-Responsive Design: Fully optimized for Mobile, Tablet, and Desktop views.}
+## 🛠️ Architecture & Tech Stack
 
-{🛠️ Tech Stack
-Frontend,Backend,Database
+- **Frontend:** React.js, React Router DOM, Tailwind CSS, Axios, React Toastify
+- **Backend Infrastructure:** Node.js, Express.js, JSON Web Tokens (JWT), Bcrypt.js
+- **Database Model:** MongoDB Atlas via Mongoose ODM Object Mapping
+- **Cloud Assets Management:** Cloudinary API for production image media persistence
+- **Payment Processing:** Stripe Node SDK Integration
 
-Tools
-React.js ,Node.js ,MongoDB ,Git & GitHub
-Tailwind CSS ,Express.js ,Postman}
+---
 
+## 📂 Project Structure
 
-
-# For the frontend
-cd ../frontend
-
-🤝 Contact
-Your Name - Maurya Ajay Munnalal - ajaymaurya1725@gmail.com
-
-Project Link: https://github.com/ajaymaurya4527/E-Commerce-Platform-for-Apparel.git
+```text
+MauryaShop/
+├── admin/                  # React Vite Admin Dashboard Platform
+│   ├── src/
+│   │   ├── components/     # Navbar, Sidebar components
+│   │   ├── pages/          # Add Product, List Products, Orders Management
+│   │   └── assets/         # Dashboard visual media packs
+├── backend/                # Node.js Express Core API Engine
+│   ├── config/             # Database connectivity & Cloudinary setup
+│   ├── controllers/        # User, Product, Cart, and Order Route Handlers
+│   ├── middleware/         # Auth verification guards (User & Admin)
+│   ├── models/             # Mongoose Schemas (User, Product, Order)
+│   └── routes/             # REST Endpoints
+└── frontend/               # React Vite Consumer E-Commerce Storefront
+    ├── src/
+    │   ├── components/     # Navbar, Hero, LatestCollection, ProductItem, Title, CartTotal
+    │   ├── context/        # ShopContext (Global State Management, Cart actions, API handlers)
+    │   ├── pages/          # Home, Collection, Product, Cart, PlaceOrder, Orders, Login
+    │   └── assets/         # App logos, promotional banners, UI icons
