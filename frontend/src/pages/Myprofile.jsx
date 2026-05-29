@@ -1,23 +1,68 @@
-import React, { useContext, useState } from 'react';
-import { User, Package, LogOut, Camera, Lock, CheckCircle } from 'lucide-react';
+import React, { useContext, useState, useEffect } from 'react'; // Added useEffect
+import { User, Package, LogOut, Camera, Lock } from 'lucide-react';
 import { ShopContext } from '../context/ShopContext';
-import axios from 'axios';
+import axios from "../utils/axios.js"
 import { toast } from 'react-toastify';
 
 const Myprofile = () => {
-  const { navigate, setAccessToken, setCartItem,  backendUrl, accessToken } = useContext(ShopContext);
+  const { navigate, setAccessToken, setCartItem, backendUrl, accessToken } = useContext(ShopContext);
 
-  // State for user details
+  // Initial state with empty values
   const [userData, setUserData] = useState({
-    fullName: 'Alex Johnson',
-    email: 'alex.j@example.com' // Keeping email static or editable as needed
+    fullName: '',
+    email: '' 
   });
 
-  // State for password fields
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: ''
   });
+
+  // 1. FETCH USER DATA ON LOAD
+  const fetchUserProfile = async () => {
+    try {
+      // We use the 'accesstoken' key to match your backend middleware
+      const response = await axios.post(backendUrl + "/user/username",{names:"ajay"}, { headers: { accesstoken: accessToken } });
+      console.log(response);
+
+      if (response.data.success) {
+        setUserData({
+          fullName: response.data.name, // Adjust based on your API response structure
+          email: response.data.email
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to load profile data");
+    }
+  };
+
+  // Run the fetch function once when the component mounts or when accessToken changes
+  useEffect(() => {
+    if (accessToken) {
+      fetchUserProfile();
+    }
+  }, [accessToken]);
+
+  // 2. UPDATE NAME LOGIC
+  const updateName = async () => {
+    try {
+      const response = await axios.post(
+        backendUrl + "/user/update-profile", 
+        { name: userData.fullName },
+        { headers: { accesstoken: accessToken } }
+      );
+
+      if (response.data.success) {
+        toast.success("Name updated successfully!");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Update failed");
+    }
+  };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -28,37 +73,22 @@ const Myprofile = () => {
     setUserData(prev => ({ ...prev, fullName: e.target.value }));
   };
 
-  const updateName = () => {
-    // Add API logic to update name
-    console.log("Updating name to:", userData.fullName);
-    alert("Name updated successfully!");
-  };
-
   const updatePassword = async () => {
-    
-
     try {
       const { currentPassword, newPassword } = passwordData;
-      let data = {
-        oldPassword: currentPassword,
-        newPassword: newPassword
-      }
       const response = await axios.post(
         backendUrl + "/user/change-password",
-        data,
-        { headers: { accessToken } }
+        { oldPassword: currentPassword, newPassword },
+        { headers: { accesstoken: accessToken } }
       );
+      
       if(response.data?.success){
         toast.success(response.data.message);
-      setPasswordData({ currentPassword: '', newPassword: '' });
+        setPasswordData({ currentPassword: '', newPassword: '' });
       }
-
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
-
+      toast.error(error.message);
     }
-
   };
 
   const logout = () => {
@@ -85,7 +115,7 @@ const Myprofile = () => {
                 <Camera size={16} />
               </button>
             </div>
-            <h2 className="mt-4 font-bold text-gray-800 text-lg">{userData.fullName}</h2>
+            <h2 className="mt-4 font-bold text-gray-800 text-lg">{userData.fullName || "Loading..."}</h2>
             <p className="text-sm text-gray-500">Premium Member</p>
           </div>
 
@@ -105,8 +135,6 @@ const Myprofile = () => {
 
         {/* Main Content Area */}
         <main className="flex-1 space-y-6">
-
-          {/* Section 1: Basic Info & Name Update */}
           <div className="bg-white rounded-2xl shadow-sm p-6 md:p-10">
             <h1 className="text-2xl font-bold text-gray-800 mb-8">Account Details</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
@@ -121,7 +149,7 @@ const Myprofile = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Email Address</label>
-                <p className="text-gray-400 font-medium border-b border-gray-50 py-2 cursor-not-allowed">{userData.email}</p>
+                <p className="text-gray-400 font-medium border-b border-gray-50 py-2 cursor-not-allowed">{userData.email || "Loading..."}</p>
               </div>
 
               <div className="md:col-span-2 flex justify-center pt-4">
@@ -135,7 +163,6 @@ const Myprofile = () => {
             </div>
           </div>
 
-          {/* Section 2: Password Security Card */}
           <div className="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-indigo-50">
             <div className="flex items-center gap-2 mb-6">
               <Lock size={20} className="text-indigo-600" />
@@ -176,7 +203,6 @@ const Myprofile = () => {
               </div>
             </div>
           </div>
-
         </main>
       </div>
     </div>

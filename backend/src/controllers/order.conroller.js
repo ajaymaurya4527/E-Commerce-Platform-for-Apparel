@@ -105,7 +105,7 @@ const verifyStripe = asyncHandler(async (req, res) => {
     const { orderId, success, userId } = req.body;
 
     try {
-        if (success === "true") {
+        if (success === "true" || success === true) {
             await Order.findByIdAndUpdate(orderId, { payment: true });
             // Optional: Clear cart again here as double safety
             await User.findByIdAndUpdate(userId, { cartData: {} });

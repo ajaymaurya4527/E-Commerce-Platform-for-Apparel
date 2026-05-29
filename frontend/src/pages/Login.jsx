@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
-import axios from 'axios';
+import axios from "../utils/axios.js"
 import { toast } from 'react-toastify';
 import { ShoppingCart } from "lucide-react";
-
 
 function Login() {
   const [currentState, setCurrentstate] = useState("Login");
@@ -13,9 +12,17 @@ function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+
+    // Logic check: ensure passwords match if signing up
+    if (currentState === "Sign Up" && password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+
     setLoading(true);
     try {
       const endpoint = currentState === "Sign Up" ? "/user/register" : "/user/login";
@@ -24,7 +31,15 @@ function Login() {
       const response = await axios.post(backendUrl + endpoint, payload);
 
       if (response.data.success) {
-        localStorage.setItem("accessToken", response.data.data.accessToken);
+        localStorage.setItem(
+          "accessToken",
+          response.data.data.accessToken
+        );
+
+        localStorage.setItem(
+          "refreshToken",
+          response.data.data.refreshToken
+        );
         toast.success(response.data.message);
         setAccessToken(response.data.data.accessToken);
       } else {
@@ -41,13 +56,11 @@ function Login() {
     if (accessToken) navigate("/");
   }, [accessToken, navigate]);
 
-
-
   return (
     <div className='min-h-screen flex items-center justify-center bg-[#f9f9f9] px-4 py-12'>
       <div className='flex flex-col md:flex-row w-full max-w-[900px] bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100'>
 
-        {/* Left Side: Branding/Visual (Hidden on small screens) */}
+        {/* Left Side: Branding/Visual */}
         <div className='hidden md:flex md:w-1/2 bg-blue-300 p-12 flex-col justify-between text-white'>
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="bg-orange-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl shadow-md">
@@ -76,7 +89,8 @@ function Login() {
             <p className='text-gray-500 text-sm mt-1'>Please enter your details below.</p>
           </div>
 
-          <form onSubmit={onSubmitHandler} className='space-y-5'>
+          <form onSubmit={onSubmitHandler} className='space-y-4'>
+            {/* NAME FIELD (Only Sign Up) */}
             {currentState === "Sign Up" && (
               <div className='space-y-1'>
                 <label className='text-xs font-bold uppercase text-gray-400 ml-1'>Full Name</label>
@@ -86,7 +100,7 @@ function Login() {
                     onChange={(e) => setName(e.target.value)}
                     value={name}
                     type="text"
-                    className='w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-black transition-all'
+                    className='w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-black transition-all'
                     placeholder='John Doe'
                     required
                   />
@@ -94,6 +108,7 @@ function Login() {
               </div>
             )}
 
+            {/* EMAIL FIELD (Always) */}
             <div className='space-y-1'>
               <label className='text-xs font-bold uppercase text-gray-400 ml-1'>Email Address</label>
               <div className='relative flex items-center'>
@@ -102,17 +117,18 @@ function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                   type="email"
-                  className='w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-black transition-all'
+                  className='w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-black transition-all'
                   placeholder='hello@example.com'
                   required
                 />
               </div>
             </div>
 
+            {/* PASSWORD FIELD (Always) */}
             <div className='space-y-1'>
               <div className='flex justify-between items-center'>
                 <label className='text-xs font-bold uppercase text-gray-400 ml-1'>Password</label>
-                <span className='text-[10px] font-bold text-gray-400 cursor-pointer hover:text-black'>FORGOT?</span>
+                {currentState === "Login" && <span className='text-[10px] font-bold text-gray-400 cursor-pointer hover:text-black'>FORGOT?</span>}
               </div>
               <div className='relative flex items-center'>
                 <span className='absolute left-4 text-gray-400'>🔒</span>
@@ -120,12 +136,30 @@ function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   type="password"
-                  className='w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-black transition-all'
+                  className='w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-black transition-all'
                   placeholder='••••••••'
                   required
                 />
               </div>
             </div>
+
+            {/* CONFIRM PASSWORD FIELD (Only Sign Up) */}
+            {currentState === "Sign Up" && (
+              <div className='space-y-1'>
+                <label className='text-xs font-bold uppercase text-gray-400 ml-1'>Confirm Password</label>
+                <div className='relative flex items-center'>
+                  <span className='absolute left-4 text-gray-400'>🔒</span>
+                  <input
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={confirmPassword} // Fixed variable here
+                    type="password"
+                    className='w-full pl-12 pr-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-black transition-all'
+                    placeholder='••••••••'
+                    required
+                  />
+                </div>
+              </div>
+            )}
 
             <button
               disabled={loading}

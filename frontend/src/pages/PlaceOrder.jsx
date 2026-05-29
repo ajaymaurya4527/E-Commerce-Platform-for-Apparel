@@ -3,7 +3,7 @@ import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
 import { ShopContext } from '../context/ShopContext'
-import axios from 'axios'
+import axios from "../utils/axios.js"
 import { toast } from 'react-toastify'
 
 function PlaceOrder() {
@@ -131,14 +131,6 @@ function PlaceOrder() {
                   {method === "stripe" && <div className='w-2 h-2 bg-orange-500 rounded-full'></div>}
                 </div>
                 <img className='h-5 ml-4' src={assets.stripe_logo} alt="Stripe" />
-              </div>
-
-              {/* Razorpay */}
-              <div onClick={() => setMethod("razorpay")} className={`flex items-center border rounded-xl p-4 cursor-pointer transition-all ${method === "razorpay" ? "border-orange-500 bg-orange-50/30" : "border-gray-100 bg-gray-50 hover:bg-gray-100"}`}>
-                <div className={`w-4 h-4 border-2 rounded-full flex items-center justify-center ${method === "razorpay" ? "border-orange-500" : "border-gray-300"}`}>
-                  {method === "razorpay" && <div className='w-2 h-2 bg-orange-500 rounded-full'></div>}
-                </div>
-                <img className='h-5 ml-4' src={assets.razorpay_logo} alt="Razorpay" />
               </div>
 
               {/* COD */}

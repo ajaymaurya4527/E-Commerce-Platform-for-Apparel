@@ -96,9 +96,10 @@ const loginUser=asyncHandler(async (req,res)=>{
     )
 
     const options = {
-        httpOnly: true,
-        secure: true
-    }
+   httpOnly: true,
+   secure: true,
+   sameSite: "None"
+}
 
     return res.status(201)
     .cookie("accessToken",accessToken,options)
@@ -108,13 +109,59 @@ const loginUser=asyncHandler(async (req,res)=>{
     },"Logged in successfully"))
 
 
-
-
-
-
-
-
 })
+
+const refreshAccessToken = asyncHandler(async (req, res) => {
+
+    const incomingRefreshToken =
+        req.cookies.refreshToken || req.body.refreshToken
+
+    if (!incomingRefreshToken) {
+        return res.status(401).json({
+            success: false,
+            message: "Refresh token not found"
+        })
+    }
+
+    try {
+
+        const decodedToken = jwt.verify(
+            incomingRefreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        )
+
+        const user = await User.findById(decodedToken?._id)
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid refresh token"
+            })
+        }
+
+        if (incomingRefreshToken !== user?.refreshToken) {
+            return res.status(401).json({
+                success: false,
+                message: "Refresh token expired"
+            })
+        }
+
+        const accessToken = user.generateAccessToken()
+
+        return res.status(200).json({
+            success: true,
+            accessToken
+        })
+
+    } catch (error) {
+
+        return res.status(401).json({
+            success: false,
+            message: "Invalid refresh token"
+        })
+    }
+})
+
 const adminLogin=asyncHandler(async (req,res)=>{
 
     const {email,password}=req.body
@@ -159,4 +206,50 @@ const changePassword=async (req,res)=>{
     }
 }
 
-export {registerUser,loginUser,adminLogin,changePassword}
+const userName=async (req,res)=>{
+    try {
+        const {names}=req.body
+        const {userId}=req.body
+        const user=await User.findById(userId);
+
+        if(!user){
+            return res.json({success:false,message:"user not found"})
+        }
+
+        const name=user.name;
+        const email=user.email;
+
+        return res.json({success:true,name,email})
+
+
+        
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message });
+        
+    }
+}
+const updateName=async (req,res)=>{
+    try {
+        const {name}=req.body;
+        const {userId}=req.body;
+
+        const updatedUser=await User.findByIdAndUpdate(
+            userId,
+            {name:name},
+            {new:true}
+        )
+        if(!updatedUser){
+            return res.json({success:false,message:"user not found"})
+        }
+
+        return res.json({success:true,message:"Name updated successfully"})
+        
+    } catch (error) {
+        console.log(error)
+        return res.json({success:false,message:error.message})
+        
+    }
+}
+
+export {registerUser,loginUser,adminLogin,changePassword,userName,updateName,refreshAccessToken}
