@@ -12,9 +12,8 @@ const app=express();
 //middlewares
 app.use(cors({
     origin: [
-        "http://localhost:5173",
-        "https://your-app.vercel.app",
-         process.env.CORS_ORIGIN
+        "https://mauryashop-e-commerce-frontend.vercel.app",
+        "https://mauryashop-e-commerce-admin.vercel.app"
     ],
     credentials: true
 }));
